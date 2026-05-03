@@ -2,8 +2,9 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>💖 Love Rain - Surat Cinta 💖</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>QR Code BENTUK LOVE - Warna Merah</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -12,552 +13,278 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0a0f1e 0%, #0e1a2a 100%);
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
             min-height: 100vh;
-            overflow: hidden;
-            font-family: 'Courier New', 'Poppins', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Poppins', sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255,255,255,0.95);
+            border-radius: 50px;
+            padding: 30px 25px 40px;
+            max-width: 550px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(231, 76, 60, 0.3);
+            border: 1px solid #ffb7c5;
+        }
+
+        h1 {
+            color: #e91e63;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .note {
+            background: #fff0f3;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: #c2185b;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 30px;
+            border: 2px solid #f48fb1;
+            font-family: monospace;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 20px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        textarea:focus {
+            border-color: #e91e63;
+            box-shadow: 0 0 0 3px rgba(233,30,99,0.2);
+        }
+
+        button {
+            background: #e91e63;
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button:hover {
+            background: #c2185b;
+            transform: scale(0.97);
+        }
+
+        /* INI PENTING: QR CODE DIPOTONG BENTUK LOVE */
+        .love-qr {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
             position: relative;
         }
 
-        .matrix-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .qr-love-shape {
+            /* Bentuk LOVE / HATI menggunakan clip-path */
+            width: 260px;
+            height: 260px;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            clip-path: path("M 130 240 C 130 240, 20 170, 20 100 C 20 50, 60 20, 110 20 C 130 20, 140 35, 150 35 C 160 35, 170 20, 190 20 C 240 20, 280 50, 280 100 C 280 170, 170 240, 170 240 C 170 240, 130 240, 130 240 Z");
+            /* alternative hati simetris pakai polygon? lebih baik pakai standard heart path */
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        /* Path hati yang lebih rapi (versi standard) */
+        .qr-love-shape {
+            clip-path: path("M 130 250 C 130 250, 10 170, 10 95 C 10 45, 55 15, 100 15 C 120 15, 130 30, 130 30 C 130 30, 140 15, 160 15 C 205 15, 250 45, 250 95 C 250 170, 130 250, 130 250 Z");
+        }
+
+        /* Tempat QR di dalam LOVE */
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            border-radius: 0;
             width: 100%;
             height: 100%;
-            background: repeating-linear-gradient(0deg, rgba(255, 50, 100, 0.03) 0px, rgba(255, 50, 100, 0.03) 2px, transparent 2px, transparent 6px);
-            pointer-events: none;
-            z-index: 1;
         }
 
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: block;
-            z-index: 2;
+        #qrcode img, #qrcode table {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain;
         }
 
-        /* Pesan muncul satu per satu - CENTER, hanya FADE saja */
-        .story-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 20;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            pointer-events: none;
+        /* WARNA MERAH pada QR code modules */
+        #qrcode img {
+            filter: brightness(0) saturate(100%) invert(22%) sepia(98%) saturate(7488%) hue-rotate(346deg) brightness(96%) contrast(98%);
         }
 
-        .story-message {
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(12px);
-            border-radius: 50px;
-            padding: 16px 32px;
-            max-width: 85%;
-            text-align: center;
-            font-family: 'Courier New', monospace;
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #ff99bb;
-            text-shadow: 0 0 8px #ff3366;
-            border: 1.5px solid rgba(255, 51, 102, 0.7);
-            box-shadow: 0 0 30px rgba(255,51,102,0.3);
-            opacity: 0;
-            transition: opacity 0.8s ease;
+        /* CSS untuk table mode */
+        #qrcode td {
+            background-color: white;
+        }
+        
+        #qrcode .qrcode-module-dark {
+            background-color: #e91e63 !important;
         }
 
-        .story-message.show {
-            opacity: 1;
+        /* Efek bayangan love */
+        .shadow-love {
+            filter: drop-shadow(0 15px 25px rgba(233,30,99,0.4));
         }
 
-        @media (max-width: 600px) {
-            .story-message {
-                font-size: 1rem;
-                padding: 12px 22px;
-                white-space: normal;
-                line-height: 1.4;
-                max-width: 90%;
-            }
+        .warning {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px;
+            font-size: 0.75rem;
+            border-radius: 20px;
+            margin-top: 20px;
+            color: #e65100;
         }
 
-        /* Tombol pertanyaan - CENTER */
-        .proposal-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 25;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-            opacity: 0;
-            transform: scale(0.9);
-            transition: all 0.4s ease;
-        }
-
-        .proposal-wrapper.show {
-            opacity: 1;
-            pointer-events: auto;
-            transform: scale(1);
-        }
-
-        .proposal-wrapper.hide {
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0.8);
-            transition: all 0.3s ease;
-        }
-
-        .question-text {
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
-            padding: 14px 32px;
-            border-radius: 60px;
-            margin-bottom: 30px;
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: #ff99bb;
-            text-shadow: 0 0 10px #ff3366;
-            border: 2px solid #ff3366;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 2px;
-            white-space: nowrap;
-            animation: pulseText 1.5s ease-in-out infinite;
-            box-shadow: 0 0 30px rgba(255,51,102,0.3);
-        }
-
-        @keyframes pulseText {
-            0% { transform: scale(1); text-shadow: 0 0 5px #ff3366; }
-            50% { transform: scale(1.05); text-shadow: 0 0 25px #ff6699; }
-            100% { transform: scale(1); text-shadow: 0 0 5px #ff3366; }
-        }
-
-        @media (max-width: 550px) {
-            .question-text {
-                font-size: 1.1rem;
-                padding: 10px 24px;
-                white-space: normal;
-                text-align: center;
-                margin-bottom: 25px;
-            }
-        }
-
-        .proposal-box {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border-radius: 60px;
-            padding: 12px 24px;
-            color: white;
-            letter-spacing: 1px;
-        }
-
-        .btn-yes {
-            background: linear-gradient(135deg, #ff3366, #ff6680);
-            font-size: 1.4rem;
-            padding: 15px 35px;
-            box-shadow: 0 0 20px #ff3366;
-        }
-
-        .btn-no {
-            background: #2a2a3a;
-            border: 1px solid #ff6680;
-            color: #ffaaaa;
-            font-size: 1.1rem;
-            padding: 12px 28px;
-        }
-
-        @media (max-width: 550px) {
-            .btn-yes { font-size: 1.1rem; padding: 12px 25px; }
-            .btn-no { font-size: 0.9rem; padding: 10px 20px; }
-            .proposal-box { gap: 20px; }
-        }
-
-        /* Pesan sukses */
-        .success-msg {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(20px);
-            padding: 25px 45px;
-            border-radius: 60px;
-            color: #ff99bb;
-            font-size: 1.8rem;
-            font-weight: bold;
-            z-index: 100;
-            border: 2px solid #ff3366;
-            text-align: center;
-            white-space: nowrap;
-            box-shadow: 0 0 50px rgba(255,51,102,0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-
-        .success-msg.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        @media (max-width: 550px) {
-            .success-msg { font-size: 1.1rem; padding: 18px 30px; white-space: normal; width: 85%; text-align: center; }
-        }
-
-        /* Tombol kontrol musik */
-        .music-control {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 30;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
-            padding: 8px 16px;
-            border-radius: 40px;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            border: 1px solid rgba(255,51,102,0.5);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .music-control:hover {
-            background: rgba(0,0,0,0.8);
-            transform: scale(1.02);
-        }
-        .music-control span {
-            color: #ff99bb;
-            font-size: 12px;
-            font-family: monospace;
-        }
-        .music-control .music-icon {
-            font-size: 18px;
+        footer {
+            margin-top: 20px;
+            font-size: 0.7rem;
+            color: #e91e63;
         }
     </style>
 </head>
 <body>
-<div class="matrix-overlay"></div>
-<canvas id="loveCanvas"></canvas>
-
-<div class="story-container" id="storyContainer">
-    <div class="story-message" id="storyMessage"></div>
-</div>
-
-<!-- Tombol pertanyaan -->
-<div class="proposal-wrapper" id="proposalWrapper">
-    <div class="question-text">Aku mau nanya sesuatu… 🙂</div>
-    <div class="question-text">Kamu mau nggak jalanin ini bareng aku?</div>
+<div class="container">
+    <h1>
+        ❤️ QR LOVE ❤️
+    </h1>
+    <div class="note">✨ QR Code bentuk LOVE (dipotong hati) + Warna Merah ✨</div>
     
-    <div class="proposal-box" id="proposalBox">
-        <button class="btn btn-yes" id="btnYes">Mau ❤️</button>
-        <button class="btn btn-no" id="btnNo">Belum dulu 🙈</button>
+    <textarea id="qrInput" rows="2" placeholder="Teks / URL...&#10;Contoh: https://instagram.com atau pesan rahasia">❤️ Kamu Istimewa ❤️</textarea>
+    
+    <button id="generate">
+        💖 Hasilkan QR LOVE Merah 💖
+    </button>
+    
+    <div class="love-qr">
+        <div class="qr-love-shape shadow-love" id="loveShapeContainer">
+            <div id="qrcode" style="width: 100%; height: 100%;"></div>
+        </div>
     </div>
-</div>
-
-<!-- Pesan sukses -->
-<div class="success-msg" id="successMsg">
-    💖 YEEAYY MAUUU! 💖<br>
-    <span style="font-size:0.7rem;">❤️ I LOVE YOU ❤️</span>
-</div>
-
-<!-- Tombol kontrol musik -->
-<div class="music-control" id="musicControl">
-    <span class="music-icon">🎵</span>
-    <span id="musicStatus">Music ON</span>
+    
+    <div class="warning">
+        ⚠️ Catatan: Karena QR dipotong bentuk LOVE, scanning mungkin kurang optimal untuk data panjang.<br>
+        Disarankan untuk teks pendek/URL pendek. Hasilnya UNIK & ROMANTIS! ❤️
+    </div>
+    <footer>❤️ Bentuk LOVE sejati | Warna merah menyala | Kirim cinta lewat QR ❤️</footer>
 </div>
 
 <script>
-    (function() {
-        // ========== AUDIO / LAGU DARI LOKAL ==========
-        const audio = new Audio('lagu.mp3');
-        audio.loop = true;
-        audio.volume = 0.5;
+    let currentQR = null;
+    
+    function generateLoveQR(text) {
+        const qrContainer = document.getElementById("qrcode");
+        if (!qrContainer) return;
         
-        let musicPlaying = false;
-        const musicControl = document.getElementById('musicControl');
-        const musicStatus = document.getElementById('musicStatus');
+        // Clear container
+        qrContainer.innerHTML = "";
         
-        function autoPlayMusic() {
-            audio.play().then(() => {
-                musicPlaying = true;
-                musicStatus.innerHTML = 'Music ON 🎵';
-            }).catch((err) => {
-                musicStatus.innerHTML = '🔇 Klik Play';
-                const tryPlayOnInteraction = () => {
-                    audio.play().then(() => {
-                        musicPlaying = true;
-                        musicStatus.innerHTML = 'Music ON 🎵';
-                        document.removeEventListener('click', tryPlayOnInteraction);
-                        document.removeEventListener('touchstart', tryPlayOnInteraction);
-                    }).catch(() => {});
-                };
-                document.addEventListener('click', tryPlayOnInteraction);
-                document.addEventListener('touchstart', tryPlayOnInteraction);
+        if (!text || text.trim() === "") {
+            alert("Masukkan teks/URL dulu ya 💕");
+            return false;
+        }
+        
+        try {
+            // Generate QR dengan ukuran besar (agar tetap terbaca walau dipotong)
+            new QRCode(qrContainer, {
+                text: text,
+                width: 280,
+                height: 280,
+                colorDark: "#e91e63",    // merah
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H  // High error correction biar tetap kebaca walau terpotong love
             });
-        }
-        
-        musicControl.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (musicPlaying) {
-                audio.pause();
-                musicPlaying = false;
-                musicStatus.innerHTML = 'Music OFF 🔇';
-            } else {
-                audio.play().then(() => {
-                    musicPlaying = true;
-                    musicStatus.innerHTML = 'Music ON 🎵';
-                }).catch(() => {
-                    musicStatus.innerHTML = '🔇 Klik Play';
-                });
-            }
-        });
-        
-        autoPlayMusic();
-        
-        // ========== CANVAS LOVE JATUH (MAX 50, AWAL 40, TIDAK NAMBAH) ==========
-        const canvas = document.getElementById('loveCanvas');
-        const ctx = canvas.getContext('2d');
-        let loves = [];
-        let animationId = null;
-        let HEART_COUNT = 40; // AWAL 40 LOVE
-        const MAX_HEARTS = 50; // MAKSIMAL 50 LOVE - TIDAK BISA NAMBAH LAGI
-        
-        let width, height;
-        const loveColors = ['#ff3366', '#ff5577', '#ff7799', '#ff99bb', '#ff1a53', '#e6005c', '#ff0066', '#ff4d6d'];
-        const heartSymbols = ['❤️', '💖', '💗', '💓', '💕', '💞', '♥', '💘', '❣️'];
-        
-        class FallingLove {
-            constructor(x, y, speed, size, symbol, color, opacity, rotationSpeed) {
-                this.x = x; this.y = y; this.speed = speed; this.size = size;
-                this.symbol = symbol; this.color = color; this.opacity = opacity;
-                this.rotation = Math.random() * Math.PI * 2;
-                this.rotationSpeed = rotationSpeed;
-                this.wobble = Math.random() * Math.PI * 2;
-                this.wobbleSpeed = 0.015 + Math.random() * 0.02;
-                this.wobbleAmount = 0.5 + Math.random() * 1.5;
-            }
-            update() {
-                this.y += this.speed;
-                this.wobble += this.wobbleSpeed;
-                this.x += Math.sin(this.wobble) * this.wobbleAmount * 0.2;
-                this.rotation += this.rotationSpeed;
-                if (this.y > height + this.size * 2) {
-                    this.y = -this.size * 2;
-                    this.x = Math.random() * width;
-                    this.speed = 1.0 + Math.random() * 3;
-                    if (Math.random() < 0.2) this.symbol = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
-                }
-                if (this.x < -this.size) this.x = width + this.size;
-                if (this.x > width + this.size) this.x = -this.size;
-            }
-            draw(ctx) {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.rotation);
-                ctx.font = `${this.size}px "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "Courier New", monospace`;
-                ctx.shadowBlur = 3;
-                ctx.shadowColor = `rgba(255, 50, 100, 0.4)`;
-                ctx.globalAlpha = this.opacity;
-                ctx.fillStyle = this.color;
-                ctx.fillText(this.symbol, 0, 0);
-                ctx.restore();
-            }
-        }
-        
-        function initLoves(count) {
-            const arr = [];
-            const maxCount = Math.min(count, MAX_HEARTS);
-            for (let i = 0; i < maxCount; i++) {
-                arr.push(new FallingLove(
-                    Math.random() * width,
-                    Math.random() * height * 1.5 - height * 0.5,
-                    0.8 + Math.random() * 3,
-                    12 + Math.random() * 22,
-                    heartSymbols[Math.floor(Math.random() * heartSymbols.length)],
-                    loveColors[Math.floor(Math.random() * loveColors.length)],
-                    0.5 + Math.random() * 0.5,
-                    (Math.random() - 0.5) * 0.025
-                ));
-            }
-            return arr;
-        }
-        
-        function updateLoves() { for (let love of loves) love.update(); }
-        
-        function drawLoves() {
-            ctx.fillStyle = 'rgba(10, 15, 30, 0.25)';
-            ctx.fillRect(0, 0, width, height);
-            for (let love of loves) love.draw(ctx);
-        }
-        
-        function resizeCanvas() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-            if (loves.length === 0) loves = initLoves(HEART_COUNT);
-            else {
-                for (let love of loves) {
-                    if (love.x > width) love.x = width - 20;
-                    if (love.x < 0) love.x = 20;
-                    if (love.y > height + 100) love.y = -love.size;
-                }
-            }
-        }
-        
-        function animate() {
-            updateLoves();
-            drawLoves();
-            animationId = requestAnimationFrame(animate);
-        }
-        
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-        loves = initLoves(HEART_COUNT);
-        animate();
-        
-        // ========== PESAN MUNCUL SATU SATU (LAMBAT + FADE SAJA) ==========
-const messages = [
-    "hai kamu 🙂",
-    "ini bunga pertama dari aku buat kamu",
-    "semoga kamu suka ya",
-    "nggak yang gimana-gimana sih, cuma pengen ngasih aja",
-    "aku cuma mau bilang sesuatu",
-    "aku seneng bisa kenal kamu",
-    "makasih ya udah nemenin aku selama ini",
-    "walaupun kita lagi jauh sekarang",
-    "aku tetap kepikiran kamu di sini",
-    "semoga kamu selalu baik-baik aja ya di sana",
-    "pelan-pelan aja, kita jalanin ini",
-    "aku di sini, tetep buat kamu",
-    "jaga diri baik-baik ya",
-    "🙂"
-];
-        
-        let messageIndex = 0;
-        let isMessageAnimating = false;
-        const storyMessageDiv = document.getElementById('storyMessage');
-        const storyContainer = document.getElementById('storyContainer');
-        const proposalWrapper = document.getElementById('proposalWrapper');
-        const successMsg = document.getElementById('successMsg');
-        
-        const MESSAGE_DURATION = 4000;
-        
-        function showNextMessage() {
-            if (isMessageAnimating) return;
             
-            if (messageIndex < messages.length) {
-                isMessageAnimating = true;
-                
-                storyMessageDiv.textContent = messages[messageIndex];
-                storyMessageDiv.classList.remove('show');
-                void storyMessageDiv.offsetWidth;
-                storyMessageDiv.classList.add('show');
-                
-                messageIndex++;
-                
-                setTimeout(() => {
-                    storyMessageDiv.classList.remove('show');
-                    setTimeout(() => {
-                        isMessageAnimating = false;
-                        if (messageIndex < messages.length) {
-                            showNextMessage();
-                        } else {
-                            finishStoryAndShowProposal();
+            // Warna modifikasi untuk table mode
+            setTimeout(() => {
+                // Untuk table mode (jika tidak pakai canvas)
+                const tableElem = qrContainer.querySelector('table');
+                if (tableElem) {
+                    const cells = tableElem.querySelectorAll('td');
+                    cells.forEach(cell => {
+                        const bgColor = window.getComputedStyle(cell).backgroundColor;
+                        if (bgColor === 'rgb(0, 0, 0)' || cell.style.backgroundColor === 'black' || cell.innerHTML === '') {
+                            cell.style.backgroundColor = '#e91e63';
+                            cell.style.background = '#e91e63';
                         }
-                    }, 800);
-                }, MESSAGE_DURATION);
-            } else {
-                finishStoryAndShowProposal();
-            }
-        }
-        
-        function finishStoryAndShowProposal() {
-            storyContainer.style.transition = "opacity 0.8s ease";
-            storyContainer.style.opacity = "0";
-            setTimeout(() => {
-                storyContainer.style.display = "none";
-                // HILANGKAN SEMUA LOVE BIAR GA LAG SAAT TOMBOL MUNCUL
-                loves = [];
-                loves = initLoves(HEART_COUNT);
-                proposalWrapper.classList.add('show');
-            }, 800);
-        }
-        
-        // ========== LOGIKA TOMBOL (TANPA NAMBAH LOVE) ==========
-        const btnYes = document.getElementById('btnYes');
-        const btnNo = document.getElementById('btnNo');
-        let noClickCount = 0;
-        let isAnswered = false;
-        
-        function updateButtons() {
-            if (isAnswered) return;
-            noClickCount++;
-            const scaleNo = Math.max(0.2, 0.9 - (noClickCount * 0.12));
-            const scaleYes = Math.min(1.7, 1 + (noClickCount * 0.12));
-            btnNo.style.transform = `scale(${scaleNo})`;
-            btnNo.style.opacity = Math.max(0.3, 1 - (noClickCount * 0.1));
-            btnYes.style.transform = `scale(${scaleYes})`;
-            btnYes.style.fontSize = `${Math.min(1.9, 1.4 + (noClickCount * 0.06))}rem`;
-            if (noClickCount >= 7) {
-                btnNo.style.pointerEvents = 'none';
-                btnNo.style.opacity = '0.2';
-                btnNo.innerText = '😭';
-            }
-        }
-        
-        btnNo.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (isAnswered) return;
-            updateButtons();
-            btnNo.style.animation = 'shakeAnim 0.2s ease-in-out 0s 2';
-            setTimeout(() => btnNo.style.animation = '', 400);
-        });
-        
-        btnYes.addEventListener('click', () => {
-            if (isAnswered) return;
-            isAnswered = true;
-            
-            proposalWrapper.classList.add('hide');
-            proposalWrapper.classList.remove('show');
-            
-            setTimeout(() => {
-                successMsg.classList.add('show');
+                    });
+                }
                 
-                setTimeout(() => {
-                    successMsg.classList.remove('show');
-                }, 4000);
-            }, 350);
-        });
-        
-        const styleShake = document.createElement('style');
-        styleShake.textContent = `@keyframes shakeAnim { 0% { transform: translateX(0px); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } 100% { transform: translateX(0px); } }`;
-        document.head.appendChild(styleShake);
-        
-        // Mulai pesan setelah 1 detik
-        setTimeout(() => {
-            showNextMessage();
-        }, 1000);
-    })();
+                // Untuk img mode
+                const qrImg = qrContainer.querySelector('img');
+                if (qrImg) {
+                    qrImg.style.filter = "brightness(0) saturate(100%) invert(22%) sepia(98%) saturate(7488%) hue-rotate(346deg) brightness(96%) contrast(98%)";
+                    qrImg.style.width = "100%";
+                    qrImg.style.height = "100%";
+                    qrImg.style.objectFit = "contain";
+                }
+                
+                // force redraw love shape
+                const loveDiv = document.querySelector('.qr-love-shape');
+                loveDiv.style.transform = 'scale(0.99)';
+                setTimeout(() => { loveDiv.style.transform = 'scale(1)'; }, 50);
+            }, 50);
+            
+            return true;
+        } catch(e) {
+            console.error(e);
+            alert("Gagal generate QR 😢 coba lagi");
+            return false;
+        }
+    }
+    
+    // Event listener
+    const generateBtn = document.getElementById("generate");
+    const textarea = document.getElementById("qrInput");
+    
+    generateBtn.addEventListener("click", () => {
+        generateLoveQR(textarea.value);
+    });
+    
+    // Load pertama kali
+    window.addEventListener("load", () => {
+        generateLoveQR(textarea.value);
+    });
+    
+    // Tekan Ctrl+Enter
+    textarea.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && e.ctrlKey) {
+            e.preventDefault();
+            generateLoveQR(textarea.value);
+        }
+    });
 </script>
 </body>
 </html>
