@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -67,7 +68,7 @@
             color: #ff99bb;
             text-shadow: 0 0 8px #ff3366;
             border: 1.5px solid rgba(255, 51, 102, 0.7);
-            box-shadow: 0 0 30px rgba(255,51,102,0.3);
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.3);
             opacity: 0;
             transition: opacity 0.8s ease;
         }
@@ -132,13 +133,24 @@
             letter-spacing: 2px;
             white-space: nowrap;
             animation: pulseText 1.5s ease-in-out infinite;
-            box-shadow: 0 0 30px rgba(255,51,102,0.3);
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.3);
         }
 
         @keyframes pulseText {
-            0% { transform: scale(1); text-shadow: 0 0 5px #ff3366; }
-            50% { transform: scale(1.05); text-shadow: 0 0 25px #ff6699; }
-            100% { transform: scale(1); text-shadow: 0 0 5px #ff3366; }
+            0% {
+                transform: scale(1);
+                text-shadow: 0 0 5px #ff3366;
+            }
+
+            50% {
+                transform: scale(1.05);
+                text-shadow: 0 0 25px #ff6699;
+            }
+
+            100% {
+                transform: scale(1);
+                text-shadow: 0 0 5px #ff3366;
+            }
         }
 
         @media (max-width: 550px) {
@@ -186,9 +198,19 @@
         }
 
         @media (max-width: 550px) {
-            .btn-yes { font-size: 1.1rem; padding: 12px 25px; }
-            .btn-no { font-size: 0.9rem; padding: 10px 20px; }
-            .proposal-box { gap: 20px; }
+            .btn-yes {
+                font-size: 1.1rem;
+                padding: 12px 25px;
+            }
+
+            .btn-no {
+                font-size: 0.9rem;
+                padding: 10px 20px;
+            }
+
+            .proposal-box {
+                gap: 20px;
+            }
         }
 
         /* Pesan sukses */
@@ -197,7 +219,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.95);
+            background: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(20px);
             padding: 25px 45px;
             border-radius: 60px;
@@ -208,7 +230,7 @@
             border: 2px solid #ff3366;
             text-align: center;
             white-space: nowrap;
-            box-shadow: 0 0 50px rgba(255,51,102,0.5);
+            box-shadow: 0 0 50px rgba(255, 51, 102, 0.5);
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.5s ease, visibility 0.5s ease;
@@ -220,7 +242,13 @@
         }
 
         @media (max-width: 550px) {
-            .success-msg { font-size: 1.1rem; padding: 18px 30px; white-space: normal; width: 85%; text-align: center; }
+            .success-msg {
+                font-size: 1.1rem;
+                padding: 18px 30px;
+                white-space: normal;
+                width: 85%;
+                text-align: center;
+            }
         }
 
         /* Tombol kontrol musik */
@@ -229,335 +257,349 @@
             bottom: 20px;
             left: 20px;
             z-index: 30;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(8px);
             padding: 8px 16px;
             border-radius: 40px;
             display: flex;
             gap: 10px;
             align-items: center;
-            border: 1px solid rgba(255,51,102,0.5);
+            border: 1px solid rgba(255, 51, 102, 0.5);
             cursor: pointer;
             transition: 0.2s;
         }
+
         .music-control:hover {
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             transform: scale(1.02);
         }
+
         .music-control span {
             color: #ff99bb;
             font-size: 12px;
             font-family: monospace;
         }
+
         .music-control .music-icon {
             font-size: 18px;
         }
     </style>
 </head>
+
 <body>
-<div class="matrix-overlay"></div>
-<canvas id="loveCanvas"></canvas>
+    <div class="matrix-overlay"></div>
+    <canvas id="loveCanvas"></canvas>
 
-<div class="story-container" id="storyContainer">
-    <div class="story-message" id="storyMessage"></div>
-</div>
-
-<!-- Tombol pertanyaan -->
-<div class="proposal-wrapper" id="proposalWrapper">
-    <div class="question-text">Aku mau nanya sesuatu… 🙂</div>
-    <div class="question-text">Kamu mau nggak jalanin ini bareng aku?</div>
-    
-    <div class="proposal-box" id="proposalBox">
-        <button class="btn btn-yes" id="btnYes">Mau ❤️</button>
-        <button class="btn btn-no" id="btnNo">Belum dulu 🙈</button>
+    <div class="story-container" id="storyContainer">
+        <div class="story-message" id="storyMessage"></div>
     </div>
-</div>
 
-<!-- Pesan sukses -->
-<div class="success-msg" id="successMsg">
-    💖 YEEAYY MAUUU! 💖<br>
-    <span style="font-size:0.7rem;">❤️ I LOVE YOU ❤️</span>
-</div>
+    <!-- Tombol pertanyaan -->
+    <div class="proposal-wrapper" id="proposalWrapper">
+        <div class="question-text">Aku mau nanya sesuatu… 🙂</div>
+        <div class="question-text">Kamu mau nggak jalanin ini bareng aku?</div>
 
-<!-- Tombol kontrol musik -->
-<div class="music-control" id="musicControl">
-    <span class="music-icon">🎵</span>
-    <span id="musicStatus">Music ON</span>
-</div>
+        <div class="proposal-box" id="proposalBox">
+            <button class="btn btn-yes" id="btnYes">Mau ❤️</button>
+            <button class="btn btn-no" id="btnNo">Belum dulu 🙈</button>
+        </div>
+    </div>
 
-<script>
-    (function() {
-        // ========== AUDIO / LAGU DARI LOKAL ==========
-        const audio = new Audio('lagu.mp3');
-        audio.loop = true;
-        audio.volume = 0.5;
-        
-        let musicPlaying = false;
-        const musicControl = document.getElementById('musicControl');
-        const musicStatus = document.getElementById('musicStatus');
-        
-        function autoPlayMusic() {
-            audio.play().then(() => {
-                musicPlaying = true;
-                musicStatus.innerHTML = 'Music ON 🎵';
-            }).catch((err) => {
-                musicStatus.innerHTML = '🔇 Klik Play';
-                const tryPlayOnInteraction = () => {
-                    audio.play().then(() => {
-                        musicPlaying = true;
-                        musicStatus.innerHTML = 'Music ON 🎵';
-                        document.removeEventListener('click', tryPlayOnInteraction);
-                        document.removeEventListener('touchstart', tryPlayOnInteraction);
-                    }).catch(() => {});
-                };
-                document.addEventListener('click', tryPlayOnInteraction);
-                document.addEventListener('touchstart', tryPlayOnInteraction);
-            });
-        }
-        
-        musicControl.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (musicPlaying) {
-                audio.pause();
-                musicPlaying = false;
-                musicStatus.innerHTML = 'Music OFF 🔇';
-            } else {
+    <!-- Pesan sukses -->
+    <div class="success-msg" id="successMsg">
+        💖 YEEAYY MAUUU! 💖<br>
+        <span style="font-size:0.7rem;">❤️ I LOVE YOU ❤️</span>
+    </div>
+
+    <!-- Tombol kontrol musik -->
+    <div class="music-control" id="musicControl">
+        <span class="music-icon">🎵</span>
+        <span id="musicStatus">Music ON</span>
+    </div>
+
+    <script>
+        (function () {
+            // ========== AUDIO / LAGU DARI LOKAL ==========
+            const audio = new Audio('lagu.mp3');
+            audio.loop = true;
+            audio.volume = 0.5;
+
+            let musicPlaying = false;
+            const musicControl = document.getElementById('musicControl');
+            const musicStatus = document.getElementById('musicStatus');
+
+            function autoPlayMusic() {
                 audio.play().then(() => {
                     musicPlaying = true;
                     musicStatus.innerHTML = 'Music ON 🎵';
-                }).catch(() => {
+                }).catch((err) => {
                     musicStatus.innerHTML = '🔇 Klik Play';
+                    const tryPlayOnInteraction = () => {
+                        audio.play().then(() => {
+                            musicPlaying = true;
+                            musicStatus.innerHTML = 'Music ON 🎵';
+                            document.removeEventListener('click', tryPlayOnInteraction);
+                            document.removeEventListener('touchstart', tryPlayOnInteraction);
+                        }).catch(() => { });
+                    };
+                    document.addEventListener('click', tryPlayOnInteraction);
+                    document.addEventListener('touchstart', tryPlayOnInteraction);
                 });
             }
-        });
-        
-        autoPlayMusic();
-        
-        // ========== CANVAS LOVE JATUH (MAX 50, AWAL 40, TIDAK NAMBAH) ==========
-        const canvas = document.getElementById('loveCanvas');
-        const ctx = canvas.getContext('2d');
-        let loves = [];
-        let animationId = null;
-        let HEART_COUNT = 40; // AWAL 40 LOVE
-        const MAX_HEARTS = 50; // MAKSIMAL 50 LOVE - TIDAK BISA NAMBAH LAGI
-        
-        let width, height;
-        const loveColors = ['#ff3366', '#ff5577', '#ff7799', '#ff99bb', '#ff1a53', '#e6005c', '#ff0066', '#ff4d6d'];
-        const heartSymbols = ['❤️', '💖', '💗', '💓', '💕', '💞', '♥', '💘', '❣️'];
-        
-        class FallingLove {
-            constructor(x, y, speed, size, symbol, color, opacity, rotationSpeed) {
-                this.x = x; this.y = y; this.speed = speed; this.size = size;
-                this.symbol = symbol; this.color = color; this.opacity = opacity;
-                this.rotation = Math.random() * Math.PI * 2;
-                this.rotationSpeed = rotationSpeed;
-                this.wobble = Math.random() * Math.PI * 2;
-                this.wobbleSpeed = 0.015 + Math.random() * 0.02;
-                this.wobbleAmount = 0.5 + Math.random() * 1.5;
-            }
-            update() {
-                this.y += this.speed;
-                this.wobble += this.wobbleSpeed;
-                this.x += Math.sin(this.wobble) * this.wobbleAmount * 0.2;
-                this.rotation += this.rotationSpeed;
-                if (this.y > height + this.size * 2) {
-                    this.y = -this.size * 2;
-                    this.x = Math.random() * width;
-                    this.speed = 1.0 + Math.random() * 3;
-                    if (Math.random() < 0.2) this.symbol = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+
+            musicControl.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (musicPlaying) {
+                    audio.pause();
+                    musicPlaying = false;
+                    musicStatus.innerHTML = 'Music OFF 🔇';
+                } else {
+                    audio.play().then(() => {
+                        musicPlaying = true;
+                        musicStatus.innerHTML = 'Music ON 🎵';
+                    }).catch(() => {
+                        musicStatus.innerHTML = '🔇 Klik Play';
+                    });
                 }
-                if (this.x < -this.size) this.x = width + this.size;
-                if (this.x > width + this.size) this.x = -this.size;
-            }
-            draw(ctx) {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.rotation);
-                ctx.font = `${this.size}px "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "Courier New", monospace`;
-                ctx.shadowBlur = 3;
-                ctx.shadowColor = `rgba(255, 50, 100, 0.4)`;
-                ctx.globalAlpha = this.opacity;
-                ctx.fillStyle = this.color;
-                ctx.fillText(this.symbol, 0, 0);
-                ctx.restore();
-            }
-        }
-        
-        function initLoves(count) {
-            const arr = [];
-            const maxCount = Math.min(count, MAX_HEARTS);
-            for (let i = 0; i < maxCount; i++) {
-                arr.push(new FallingLove(
-                    Math.random() * width,
-                    Math.random() * height * 1.5 - height * 0.5,
-                    0.8 + Math.random() * 3,
-                    12 + Math.random() * 22,
-                    heartSymbols[Math.floor(Math.random() * heartSymbols.length)],
-                    loveColors[Math.floor(Math.random() * loveColors.length)],
-                    0.5 + Math.random() * 0.5,
-                    (Math.random() - 0.5) * 0.025
-                ));
-            }
-            return arr;
-        }
-        
-        function updateLoves() { for (let love of loves) love.update(); }
-        
-        function drawLoves() {
-            ctx.fillStyle = 'rgba(10, 15, 30, 0.25)';
-            ctx.fillRect(0, 0, width, height);
-            for (let love of loves) love.draw(ctx);
-        }
-        
-        function resizeCanvas() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-            if (loves.length === 0) loves = initLoves(HEART_COUNT);
-            else {
-                for (let love of loves) {
-                    if (love.x > width) love.x = width - 20;
-                    if (love.x < 0) love.x = 20;
-                    if (love.y > height + 100) love.y = -love.size;
+            });
+
+            autoPlayMusic();
+
+            // ========== CANVAS LOVE JATUH (MAX 50, AWAL 40, TIDAK NAMBAH) ==========
+            const canvas = document.getElementById('loveCanvas');
+            const ctx = canvas.getContext('2d');
+            let loves = [];
+            let animationId = null;
+            let HEART_COUNT = 40; // AWAL 40 LOVE
+            const MAX_HEARTS = 50; // MAKSIMAL 50 LOVE - TIDAK BISA NAMBAH LAGI
+
+            let width, height;
+            const loveColors = ['#ff3366', '#ff5577', '#ff7799', '#ff99bb', '#ff1a53', '#e6005c', '#ff0066', '#ff4d6d'];
+            const heartSymbols = ['❤️', '💖', '💗', '💓', '💕', '💞', '♥', '💘', '❣️'];
+
+            class FallingLove {
+                constructor(x, y, speed, size, symbol, color, opacity, rotationSpeed) {
+                    this.x = x; this.y = y; this.speed = speed; this.size = size;
+                    this.symbol = symbol; this.color = color; this.opacity = opacity;
+                    this.rotation = Math.random() * Math.PI * 2;
+                    this.rotationSpeed = rotationSpeed;
+                    this.wobble = Math.random() * Math.PI * 2;
+                    this.wobbleSpeed = 0.015 + Math.random() * 0.02;
+                    this.wobbleAmount = 0.5 + Math.random() * 1.5;
+                }
+                update() {
+                    this.y += this.speed;
+                    this.wobble += this.wobbleSpeed;
+                    this.x += Math.sin(this.wobble) * this.wobbleAmount * 0.2;
+                    this.rotation += this.rotationSpeed;
+                    if (this.y > height + this.size * 2) {
+                        this.y = -this.size * 2;
+                        this.x = Math.random() * width;
+                        this.speed = 1.0 + Math.random() * 3;
+                        if (Math.random() < 0.2) this.symbol = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                    }
+                    if (this.x < -this.size) this.x = width + this.size;
+                    if (this.x > width + this.size) this.x = -this.size;
+                }
+                draw(ctx) {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate(this.rotation);
+                    ctx.font = `${this.size}px "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "Courier New", monospace`;
+                    ctx.shadowBlur = 3;
+                    ctx.shadowColor = `rgba(255, 50, 100, 0.4)`;
+                    ctx.globalAlpha = this.opacity;
+                    ctx.fillStyle = this.color;
+                    ctx.fillText(this.symbol, 0, 0);
+                    ctx.restore();
                 }
             }
-        }
-        
-        function animate() {
-            updateLoves();
-            drawLoves();
-            animationId = requestAnimationFrame(animate);
-        }
-        
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-        loves = initLoves(HEART_COUNT);
-        animate();
-        
-        // ========== PESAN MUNCUL SATU SATU (LAMBAT + FADE SAJA) ==========
-const messages = [
-    "hai kamu 🙂",
-    "ini bunga pertama dari aku buat kamu",
-    "semoga kamu suka ya",
-    "nggak yang gimana-gimana sih, cuma pengen ngasih aja",
-    "aku cuma mau bilang sesuatu",
-    "aku seneng bisa kenal kamu",
-    "makasih ya udah nemenin aku selama ini",
-    "walaupun kita lagi jauh sekarang",
-    "aku tetap kepikiran kamu di sini",
-    "semoga kamu selalu baik-baik aja ya di sana",
-    "pelan-pelan aja, kita jalanin ini",
-    "aku di sini, tetep buat kamu",
-    "jaga diri baik-baik ya",
-    "🙂"
-];
-        
-        let messageIndex = 0;
-        let isMessageAnimating = false;
-        const storyMessageDiv = document.getElementById('storyMessage');
-        const storyContainer = document.getElementById('storyContainer');
-        const proposalWrapper = document.getElementById('proposalWrapper');
-        const successMsg = document.getElementById('successMsg');
-        
-        const MESSAGE_DURATION = 4000;
-        
-        function showNextMessage() {
-            if (isMessageAnimating) return;
-            
-            if (messageIndex < messages.length) {
-                isMessageAnimating = true;
-                
-                storyMessageDiv.textContent = messages[messageIndex];
-                storyMessageDiv.classList.remove('show');
-                void storyMessageDiv.offsetWidth;
-                storyMessageDiv.classList.add('show');
-                
-                messageIndex++;
-                
-                setTimeout(() => {
+
+            function initLoves(count) {
+                const arr = [];
+                const maxCount = Math.min(count, MAX_HEARTS);
+                for (let i = 0; i < maxCount; i++) {
+                    arr.push(new FallingLove(
+                        Math.random() * width,
+                        Math.random() * height * 1.5 - height * 0.5,
+                        0.8 + Math.random() * 3,
+                        12 + Math.random() * 22,
+                        heartSymbols[Math.floor(Math.random() * heartSymbols.length)],
+                        loveColors[Math.floor(Math.random() * loveColors.length)],
+                        0.5 + Math.random() * 0.5,
+                        (Math.random() - 0.5) * 0.025
+                    ));
+                }
+                return arr;
+            }
+
+            function updateLoves() { for (let love of loves) love.update(); }
+
+            function drawLoves() {
+                ctx.fillStyle = 'rgba(10, 15, 30, 0.25)';
+                ctx.fillRect(0, 0, width, height);
+                for (let love of loves) love.draw(ctx);
+            }
+
+            function resizeCanvas() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+                if (loves.length === 0) loves = initLoves(HEART_COUNT);
+                else {
+                    for (let love of loves) {
+                        if (love.x > width) love.x = width - 20;
+                        if (love.x < 0) love.x = 20;
+                        if (love.y > height + 100) love.y = -love.size;
+                    }
+                }
+            }
+
+            function animate() {
+                updateLoves();
+                drawLoves();
+                animationId = requestAnimationFrame(animate);
+            }
+
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+            loves = initLoves(HEART_COUNT);
+            animate();
+
+            // ========== PESAN MUNCUL SATU SATU (LAMBAT + FADE SAJA) ==========
+            const messages = [
+                "hai kamu 🙂",
+                "ini bunga pertama dari aku buat kamu",
+                "semoga kamu suka ya",
+                "nggak yang gimana-gimana sih, cuma pengen ngasih aja",
+                "aku cuma mau bilang sesuatu",
+                "aku seneng bisa kenal kamu",
+                "makasih ya udah nemenin aku selama ini",
+                "sekarang kamu mau ke arab ya",
+                "semangat ya di sana, semoga keterima 🤍",
+                "yaa… jadi makin jauh deh kita",
+                "tapi gapapa, aku tetap di sini",
+                "walaupun kita lagi jauh sekarang",
+                "aku tetap kepikiran kamu di sini",
+                "cepet sembuh ya tangan kamu",
+                "jangan dipaksain, istirahat yang cukup",
+                "aku harap kamu juga bisa pelan-pelan sembuhin hati kamu",
+                "kapan ya kamu bisa sayang sama aku 🙂",
+                "soalnya aku udah sayang sama kamu",
+                "semoga kamu selalu baik-baik aja ya di sana",
+                "pelan-pelan aja, kita jalanin ini",
+                "aku di sini, tetep buat kamu",
+                "jaga diri baik-baik ya",
+                "🙂"
+            ];
+
+            let messageIndex = 0;
+            let isMessageAnimating = false;
+            const storyMessageDiv = document.getElementById('storyMessage');
+            const storyContainer = document.getElementById('storyContainer');
+            const proposalWrapper = document.getElementById('proposalWrapper');
+            const successMsg = document.getElementById('successMsg');
+
+            const MESSAGE_DURATION = 4000;
+
+            function showNextMessage() {
+                if (isMessageAnimating) return;
+
+                if (messageIndex < messages.length) {
+                    isMessageAnimating = true;
+
+                    storyMessageDiv.textContent = messages[messageIndex];
                     storyMessageDiv.classList.remove('show');
+                    void storyMessageDiv.offsetWidth;
+                    storyMessageDiv.classList.add('show');
+
+                    messageIndex++;
+
                     setTimeout(() => {
-                        isMessageAnimating = false;
-                        if (messageIndex < messages.length) {
-                            showNextMessage();
-                        } else {
-                            finishStoryAndShowProposal();
-                        }
-                    }, 800);
-                }, MESSAGE_DURATION);
-            } else {
-                finishStoryAndShowProposal();
+                        storyMessageDiv.classList.remove('show');
+                        setTimeout(() => {
+                            isMessageAnimating = false;
+                            if (messageIndex < messages.length) {
+                                showNextMessage();
+                            } else {
+                                finishStoryAndShowProposal();
+                            }
+                        }, 800);
+                    }, MESSAGE_DURATION);
+                } else {
+                    finishStoryAndShowProposal();
+                }
             }
-        }
-        
-        function finishStoryAndShowProposal() {
-            storyContainer.style.transition = "opacity 0.8s ease";
-            storyContainer.style.opacity = "0";
-            setTimeout(() => {
-                storyContainer.style.display = "none";
-                // HILANGKAN SEMUA LOVE BIAR GA LAG SAAT TOMBOL MUNCUL
-                loves = [];
-                loves = initLoves(HEART_COUNT);
-                proposalWrapper.classList.add('show');
-            }, 800);
-        }
-        
-        // ========== LOGIKA TOMBOL (TANPA NAMBAH LOVE) ==========
-        const btnYes = document.getElementById('btnYes');
-        const btnNo = document.getElementById('btnNo');
-        let noClickCount = 0;
-        let isAnswered = false;
-        
-        function updateButtons() {
-            if (isAnswered) return;
-            noClickCount++;
-            const scaleNo = Math.max(0.2, 0.9 - (noClickCount * 0.12));
-            const scaleYes = Math.min(1.7, 1 + (noClickCount * 0.12));
-            btnNo.style.transform = `scale(${scaleNo})`;
-            btnNo.style.opacity = Math.max(0.3, 1 - (noClickCount * 0.1));
-            btnYes.style.transform = `scale(${scaleYes})`;
-            btnYes.style.fontSize = `${Math.min(1.9, 1.4 + (noClickCount * 0.06))}rem`;
-            if (noClickCount >= 7) {
-                btnNo.style.pointerEvents = 'none';
-                btnNo.style.opacity = '0.2';
-                btnNo.innerText = '😭';
-            }
-        }
-        
-        btnNo.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (isAnswered) return;
-            updateButtons();
-            btnNo.style.animation = 'shakeAnim 0.2s ease-in-out 0s 2';
-            setTimeout(() => btnNo.style.animation = '', 400);
-        });
-        
-        btnYes.addEventListener('click', () => {
-            if (isAnswered) return;
-            isAnswered = true;
-            
-            proposalWrapper.classList.add('hide');
-            proposalWrapper.classList.remove('show');
-            
-            setTimeout(() => {
-                successMsg.classList.add('show');
-                
+
+            function finishStoryAndShowProposal() {
+                storyContainer.style.transition = "opacity 0.8s ease";
+                storyContainer.style.opacity = "0";
                 setTimeout(() => {
-                    successMsg.classList.remove('show');
-                }, 4000);
-            }, 350);
-        });
-        
-        const styleShake = document.createElement('style');
-        styleShake.textContent = `@keyframes shakeAnim { 0% { transform: translateX(0px); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } 100% { transform: translateX(0px); } }`;
-        document.head.appendChild(styleShake);
-        
-        // Mulai pesan setelah 1 detik
-        setTimeout(() => {
-            showNextMessage();
-        }, 1000);
-    })();
-</script>
+                    storyContainer.style.display = "none";
+                    // HILANGKAN SEMUA LOVE BIAR GA LAG SAAT TOMBOL MUNCUL
+                    loves = [];
+                    loves = initLoves(HEART_COUNT);
+                    proposalWrapper.classList.add('show');
+                }, 800);
+            }
+
+            // ========== LOGIKA TOMBOL (TANPA NAMBAH LOVE) ==========
+            const btnYes = document.getElementById('btnYes');
+            const btnNo = document.getElementById('btnNo');
+            let noClickCount = 0;
+            let isAnswered = false;
+
+            function updateButtons() {
+                if (isAnswered) return;
+                noClickCount++;
+                const scaleNo = Math.max(0.2, 0.9 - (noClickCount * 0.12));
+                const scaleYes = Math.min(1.7, 1 + (noClickCount * 0.12));
+                btnNo.style.transform = `scale(${scaleNo})`;
+                btnNo.style.opacity = Math.max(0.3, 1 - (noClickCount * 0.1));
+                btnYes.style.transform = `scale(${scaleYes})`;
+                btnYes.style.fontSize = `${Math.min(1.9, 1.4 + (noClickCount * 0.06))}rem`;
+                if (noClickCount >= 7) {
+                    btnNo.style.pointerEvents = 'none';
+                    btnNo.style.opacity = '0.2';
+                    btnNo.innerText = '😭';
+                }
+            }
+
+            btnNo.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (isAnswered) return;
+                updateButtons();
+                btnNo.style.animation = 'shakeAnim 0.2s ease-in-out 0s 2';
+                setTimeout(() => btnNo.style.animation = '', 400);
+            });
+
+            btnYes.addEventListener('click', () => {
+                if (isAnswered) return;
+                isAnswered = true;
+
+                proposalWrapper.classList.add('hide');
+                proposalWrapper.classList.remove('show');
+
+                setTimeout(() => {
+                    successMsg.classList.add('show');
+
+                    setTimeout(() => {
+                        successMsg.classList.remove('show');
+                    }, 4000);
+                }, 350);
+            });
+
+            const styleShake = document.createElement('style');
+            styleShake.textContent = `@keyframes shakeAnim { 0% { transform: translateX(0px); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } 100% { transform: translateX(0px); } }`;
+            document.head.appendChild(styleShake);
+
+            // Mulai pesan setelah 1 detik
+            setTimeout(() => {
+                showNextMessage();
+            }, 1000);
+        })();
+    </script>
 </body>
+
 </html>
